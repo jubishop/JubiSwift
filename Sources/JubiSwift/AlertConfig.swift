@@ -3,9 +3,9 @@
 import SwiftUI
 
 public struct AlertConfig {
-  let title: String
-  var message: () -> any View = { EmptyView() }
-  var actions: () -> any View = { Button("OK", action: {}) }
+  public let title: String
+  public var message: () -> any View = { EmptyView() }
+  public var actions: () -> any View = { Button("OK", action: {}) }
 }
 
 extension View {

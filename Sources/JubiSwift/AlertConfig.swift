@@ -6,6 +6,17 @@ public struct AlertConfig {
   public let title: String
   public var message: () -> any View = { EmptyView() }
   public var actions: () -> any View = { Button("OK", action: {}) }
+
+  // Explicitly declare the initializer as public
+  public init(
+    title: String,
+    message: @escaping () -> any View,
+    actions: @escaping () -> any View
+  ) {
+    self.title = title
+    self.message = message
+    self.actions = actions
+  }
 }
 
 extension View {
@@ -33,4 +44,3 @@ extension View {
     )
   }
 }
-

@@ -4,14 +4,14 @@ import SwiftUI
 
 public struct AlertConfig {
   public let title: String
-  public var message: () -> any View = { EmptyView() }
-  public var actions: () -> any View = { Button("OK", action: {}) }
+  public var message: () -> any View
+  public var actions: () -> any View
 
-  // Explicitly declare the initializer as public
+  // Public initializer with default values for message and actions
   public init(
     title: String,
-    message: @escaping () -> any View,
-    actions: @escaping () -> any View
+    message: @escaping () -> any View = { EmptyView() },
+    actions: @escaping () -> any View = { Button("OK", action: {}) }
   ) {
     self.title = title
     self.message = message
@@ -20,7 +20,7 @@ public struct AlertConfig {
 }
 
 extension View {
-  func customAlert(config: Binding<AlertConfig?>) -> some View {
+  public func customAlert(config: Binding<AlertConfig?>) -> some View {
     alert(
       config.wrappedValue?.title ?? "",
       isPresented: Binding(

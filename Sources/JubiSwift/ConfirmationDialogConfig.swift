@@ -11,13 +11,13 @@ public struct ConfirmationDialogConfig {
   public init(
     title: String,
     titleVisibility: Visibility = .automatic,
-    message: @escaping () -> any View = { EmptyView() },
-    actions: @escaping () -> any View = { Button("Cancel", role: .cancel) {} }
+    actions: @escaping () -> any View = { Button("Cancel", role: .cancel) {} },
+    message: @escaping () -> any View = { EmptyView() }
   ) {
     self.title = title
     self.titleVisibility = titleVisibility
-    self.message = message
     self.actions = actions
+    self.message = message
   }
 }
 

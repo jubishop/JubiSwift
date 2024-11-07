@@ -4,17 +4,21 @@ import SwiftUI
 
 public struct AlertConfig {
   public let title: String
-  public var message: () -> any View
-  public var actions: () -> any View
+  public var message: () -> AnyView
+  public var actions: () -> AnyView
 
   public init(
     title: String,
-    message: @escaping () -> any View = { EmptyView() },
-    actions: @escaping () -> any View = { Button("OK", action: {}) }
+    @ViewBuilder message: @escaping () -> some View = {
+      EmptyView()
+    },
+    @ViewBuilder actions: @escaping () -> some View = {
+      Button("OK", action: {})
+    }
   ) {
     self.title = title
-    self.message = message
-    self.actions = actions
+    self.message = { AnyView(message()) }
+    self.actions = { AnyView(actions()) }
   }
 }
 
@@ -32,12 +36,12 @@ extension View {
       ),
       actions: {
         if let actions = config.wrappedValue?.actions() {
-          AnyView(actions)
+          actions
         }
       },
       message: {
         if let message = config.wrappedValue?.message() {
-          AnyView(message)
+          message
         }
       }
     )

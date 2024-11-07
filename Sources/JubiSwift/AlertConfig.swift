@@ -4,21 +4,21 @@ import SwiftUI
 
 public struct AlertConfig {
   public let title: String
-  public var message: () -> AnyView
   public var actions: () -> AnyView
+  public var message: () -> AnyView
 
   public init(
     title: String,
-    @ViewBuilder message: @escaping () -> some View = {
-      EmptyView()
-    },
     @ViewBuilder actions: @escaping () -> some View = {
       Button("OK", action: {})
+    },
+    @ViewBuilder message: @escaping () -> some View = {
+      EmptyView()
     }
   ) {
     self.title = title
-    self.message = { AnyView(message()) }
     self.actions = { AnyView(actions()) }
+    self.message = { AnyView(message()) }
   }
 }
 

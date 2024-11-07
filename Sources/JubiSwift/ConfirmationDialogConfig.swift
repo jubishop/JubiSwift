@@ -2,25 +2,28 @@
 
 import SwiftUI
 
-public struct AlertConfig {
+public struct ConfirmationDialogConfig {
   public let title: String
-  public var message: () -> any View
+  public var titleVisibility: Visibility
   public var actions: () -> any View
+  public var message: () -> any View
 
   public init(
     title: String,
+    titleVisibility: Visibility = .automatic,
     message: @escaping () -> any View = { EmptyView() },
-    actions: @escaping () -> any View = { Button("OK", action: {}) }
+    actions: @escaping () -> any View = { Button("Cancel", role: .cancel) {} }
   ) {
     self.title = title
+    self.titleVisibility = titleVisibility
     self.message = message
     self.actions = actions
   }
 }
 
 extension View {
-  public func customAlert(config: Binding<AlertConfig?>) -> some View {
-    alert(
+  public func customConfirmationDialog(config: Binding<ConfirmationDialogConfig?>) -> some View {
+    confirmationDialog(
       config.wrappedValue?.title ?? "",
       isPresented: Binding(
         get: { config.wrappedValue != nil },
@@ -30,6 +33,7 @@ extension View {
           }
         }
       ),
+      titleVisibility: config.wrappedValue?.titleVisibility ?? .automatic,
       actions: {
         if let actions = config.wrappedValue?.actions() {
           AnyView(actions)

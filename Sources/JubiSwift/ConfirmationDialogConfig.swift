@@ -5,19 +5,23 @@ import SwiftUI
 public struct ConfirmationDialogConfig {
   public let title: String
   public var titleVisibility: Visibility
-  public var actions: () -> any View
-  public var message: () -> any View
+  public var actions: () -> AnyView
+  public var message: () -> AnyView
 
   public init(
     title: String,
     titleVisibility: Visibility = .automatic,
-    actions: @escaping () -> any View = { Button("Cancel", role: .cancel) {} },
-    message: @escaping () -> any View = { EmptyView() }
+    @ViewBuilder actions: @escaping () -> some View = {
+      Button("Cancel", role: .cancel) {}
+    },
+    @ViewBuilder message: @escaping () -> some View = {
+      EmptyView()
+    }
   ) {
     self.title = title
     self.titleVisibility = titleVisibility
-    self.actions = actions
-    self.message = message
+    self.actions = { AnyView(actions()) }
+    self.message = { AnyView(message()) }
   }
 }
 
@@ -36,12 +40,12 @@ extension View {
       titleVisibility: config.wrappedValue?.titleVisibility ?? .automatic,
       actions: {
         if let actions = config.wrappedValue?.actions() {
-          AnyView(actions)
+          actions
         }
       },
       message: {
         if let message = config.wrappedValue?.message() {
-          AnyView(message)
+          message
         }
       }
     )
